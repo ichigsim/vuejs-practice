@@ -8,8 +8,11 @@
   <title>Vue.js App</title>
 </head>
 <body>
-  <div id="app"> 
-    
+  <script src="https://cdn.jsdelivr.net/npm/smooth-scroll@12.1.5"></script>
+  <div id="app" v-cloak> 
+    <header v-bind:class="{ compact: scrollY > 200}">
+      200pxより下にスクロールしたら .compactを付与
+    </header>
     <!-- 1. テキストのバインディング -->
     <p>{{ message }}</p>
     <input type="text" v-bind:placeholder.sync="message">
@@ -60,7 +63,7 @@
     <img v-bind="item" v-bind:id="'thumb-' + item.id">
 
     <!-- SVGのデータバインディング -->
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <svg xmlns="http://www.w3.org/2000/svg" versionk="1.1">
       <circle cx="100" cy="75" v-bind:r="radius" fill="lightpink"/>
     </svg>
     <input type="range" min="0" max="100" v-model="radius">
@@ -113,12 +116,168 @@
     <ul>
         <li v-for="(item, index) in monsters" v-bind:key="item.id">
           ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+          <!-- 削除ボタンをv-for内に作成 -->
           <button v-on:click="doRemove(index)">モンスターを削除</button>
         </li>
+      </ul>
+      
+      <button v-on:click="doUpdate" v-bind:key="item.id">更新</button>
+      
+      <ul>
+        <li v-for="(item, index) in monsters" v-bind:key="item.id" v-if="item.hp">
+          ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+          <span v-if="item.hp < 50">瀕死！</span>
+          <button v-on:click="doAttack(index)">攻撃する</button>
+      </li> 
     </ul>
- 
+
+    <ul>
+        <li v-for="(item, index) in monsters" v-bind:key="item.id" v-if="item.hp">
+          ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+          <span v-if="item.hp < 50">瀕死！</span>
+        </li> 
+      </ul>
+      
+      <select>
+        <option v-for="item in monName">{{ item }}</option>
+      </select>
+      
+      <button v-on:click="doFilter">filter</button>
+      
+      <span v-for="item in 15">{{ item }}</span>
+      
+      <span v-for="item in [1, 5, 10, 15]">{{ item }}</span>
+      
+      <span v-for="item in item.alt">{{ item }}</span>
+      
+      <!-- <ul>
+        <li v-for="(item, index> in list" v-bind]key="item.id">
+          ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+        </li>
+      </ul> -->
+
+      <p ref="hello">Hello</p>
+
+      <button v-on:click="handleClick2">カウントアップ</button>
+      <button v-on:click="show=!show">表示/非表示</button>
+      <span ref="count" v-if="show">0</span>
+
+      <a v-bind:href="url" v-pre>
+        Hello {{ message }}
+      </a>
+      <a v-bind:href="url" v-once>
+        Hello {{ message }}
+      </a>
+
+      <span v-text="message"></span>
+      
+      <span v-html="message"></span>
+
+      <!-- v-bindは:,v-onは@で省略できる -->
+
+      <button @click="handleClick">クリック</button>
+      <button v-on:click="count++">クリック</button>
+      <button v-on:click="handleClick($event, item)">クリック</button>      
+
+      <img src="item.jpg" v-on:load="show=true" v-bind:class="{hide: !show}">
+
+      <div v-on:scroll="handler">
+        <p>testdesuyo-</p>
+      </div>
+      <div v-on:mousewheel="handler">
+        <p>tesutoですよー</p>
+      </div>
+      <div @dragstart="handler" draggable>
+        <p>テスト3s</p>
+      </div>
+
+      <input v-bind:alue="message" v-on:input="handleInput">
+      <div v-on:click.right="handler">example</div>
+      <div v-on:click.prevent="handler">example</div>
+
+      <div v-on:click="handler('div1')">
+        div1
+        <a href="#top" v-on:click.prevent="handler('div')">div2</a>
+      </div>
+
+      <input v-on:keydown.13="handler">
+      <input v-on:keydown.enter="handler">
+      <button v-on:click.shift="doDelete">削除ボタン</button>
+
+      <input v-model="message">
+      <p>{{ message }}</p>
+
+      <textarea v-model="message"></textarea>
+      <pre>{{ message }}</pre>
+
+
+      <label>
+        <input type="checkbox" v-model="val" true-value="yes" false-value="no"> {{ val }}
+      </label>
+
+      <label><input type="checkbox" v-model="val" value="A"> A</label>
+      <label><input type="checkbox" v-model="val" value="B"> B</label>
+      <label><input type="checkbox" v-model="val" value="C"> C</label>
+      <p>{{ val }}</p>
+      
+      <label><input type="radio" value="a" v-model="val2"> A</label>
+      <label><input type="radio" value="b" v-model="val2"> B</label>
+      <label><input type="radio" value="c" v-model="val2"> C</label>
+      <p>{{ val2 }}</p>
+
+      <select v-model="val3">
+        <option disabled="disabled">選択してください</option>
+        <option value="a">A</option>
+        <option value="b">B</option>
+        <option value="c">C</option>
+      </select>
+      <p>{{ val3 }}</p>
+      <br>
+      <select v-model="val4" multiple>
+        <option value="a">A</option>
+        <option value="b">B</option>
+        <option value="c">C</option>
+      </select>
+      <p>{{ val4 }}</p>
+
+      <input type="file" v-on:change="handleChange">
+      <div v-if="preview"><img v-bind:src="preview"></div>
+
+      <input type="range" v-model.number="val5"> {{ val5 }}
+
+      <input type="text" v-model.number.lazy.trim="price"> {{ price }}
+
+      <div v-on:click="scrollTop">
+        ページの上部に移動  
+      </div>
+
+      <p>{{ width }}の半分は{{ halfWidth }}</p>
+
+      <input v-model.number="width"> {{ width }}
+      <input v-model.number="halfWidth"> {{ halfWidth }}
+      
+      <p>X: {{ halfPoint.x }}</p>
+      <p>X: {{ halfPoint.y }}</p>
+
+      <ol>
+        <li>{{ computedData }}</li>
+        <li>{{ computedData }}</li>
+      </ol>
+      <ol>
+        <li>{{ methodsData() }}</li>
+        <li>{{ methodsData() }}</li>
+      </ol>
+
+      <input v-model.number="budget"> 円以下に絞り込む
+      <input v-model.number="limit"> 件を表示
+      <p>{{ matched.length }} 件中 {{ limited.length }} 件を表示中</p>
+      <ul>
+        <li v-for="item in limited" v-bind:key="item.id">
+          {{ item.name }} {{ item.price }}円
+        </li>
+      </ul>
+      <button v-on:click="order=!order">切り替え</button>
   </div>
-  
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   <script src="main.js"></script>
 </body>
