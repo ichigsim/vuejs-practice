@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="X-UA-Cjjjompatible" content="ie=edge">
   <link href="main.css" rel="stylesheet">
   <title>Vue.js App</title>
 </head>
@@ -12,6 +12,7 @@
     
     <!-- 1. テキストのバインディング -->
     <p>{{ message }}</p>
+    <input type="text" v-bind:placeholder.sync="message">
 
     <!-- 2. 繰り返しの描画 -->
     <ol>
@@ -23,21 +24,101 @@
 
     <!-- 4. フォームの入力と同期 -->
     <p>{{ count }}</p>
+    <p>{{ Math.round(pi) }}</p>
+
     <input v-model="message">
 
     <!-- 5. 条件分岐 -->
     <button v-on:click="show=!show">切り替え</button>
-    
+
     <p v-if="show">Hello Vue.js!</p>
     <br>
     
     <!-- 6. トランジション&アニメーション -->
     <transition>
-      <p v-if="show">Yeehhhhhhhi!!</p>
+      <p v-if="show">Yeehhhhhhhi!!</p
+        >
     </transition>
 
-  </div>
+    <pre>{{ $data }}</pre>
 
+      <div v-bind:text-content.prop="message"></div>
+      <div v-bind:scroll-top.prop="scroll">this is</div>
+
+    <!-- カウンター -->
+    <p>{{ count }}回クリックしたよ</p>
+
+    <button v-on:click="increment">カウントを増やす</button>
+
+    <!-- クラスとスタイルのデータバインディング -->
+    <p v-bind:class="{ child: isChild, 'is-active': isActive}">Text</p>
+    <p style="color:blue" v-bind:style="{ color: textColor, backgroundColor: bgColor}">Text</p>
+    <!-- <p v-bind:class="[isActive ? 'active' : 'normal', otherClass]">Text</p> -->
+    <p v-bind:class="classObject">Text</p>
+    <p v-bind:style="styleObject">Text</p>
+
+    <img v-bind="item" v-bind:id="'thumb-' + item.id">
+
+    <!-- SVGのデータバインディング -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <circle cx="100" cy="75" v-bind:r="radius" fill="lightpink"/>
+    </svg>
+    <input type="range" min="0" max="100" v-model="radius">
+    
+    <!-- テンプレートにおける条件分岐 -->
+    <div v-if="ok">v-if条件による描画</div>
+    <div v-show="ok">v-show条件による描画</div>
+
+    <template>
+      <header>Title</header>
+      <div>content</div>
+    </template>
+
+    <div v-if="type === 'A'" key="a">
+      type is A
+    </div>
+    <div v-else-if="type === 'B'" key="b">
+      type is B
+    </div>
+    <div v-else key="others">
+      すべての条件を満たさなかった
+    </div>
+
+    <ul>
+      <li v-for="item in monsters" 
+          v-bind:key="item.id" 
+          v-bind:class="{ tuyoi: item.hp > 300}">
+        ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+        <span v-if="item.hp > 300">つよい！</span>
+      </li>
+    </ul>
+
+    <ul>
+      <li v-for="item in monsters" 
+          v-bind:key="item.id" 
+          v-if="item.hp < 300">  
+        ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+      </li>
+    </ul>
+
+    名前
+    <input v-model="name">
+    <button v-on:click="doAdd">モンスターを追加</button>
+    <ul>
+      <li v-for="item in monsters" v-bind:key="item.id">
+        ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+      </li>
+    </ul>
+    
+    <ul>
+        <li v-for="(item, index) in monsters" v-bind:key="item.id">
+          ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+          <button v-on:click="doRemove(index)">モンスターを削除</button>
+        </li>
+    </ul>
+ 
+  </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   <script src="main.js"></script>
 </body>
