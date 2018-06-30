@@ -4,17 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="main.css" rel="sytlesheet">
+  <link href="main.css" rel="stylesheet">
   <title>Vue.js App</title>
 </head>
 <body>
-  <div id="app">
+  <div id="app"> 
+    
+    <!-- 1. テキストのバインディング -->
+    <p>{{ message }}</p>
 
+    <!-- 2. 繰り返しの描画 -->
+    <ol>
+      <li v-for="item in list">{{ item }}</li>
+    </ol>
 
+    <!-- 3. イベントの利用 -->
+    <button v-on:click="handleClick">Click</button>
+
+    <!-- 4. フォームの入力と同期 -->
+    <p>{{ count }}</p>
+    <input v-model="message">
+
+    <!-- 5. 条件分岐 -->
+    <button v-on:click="show=!show">切り替え</button>
+    
+    <p v-if="show">Hello Vue.js!</p>
+    <br>
+    
+    <!-- 6. トランジション&アニメーション -->
+    <transition>
+      <p v-if="show">Yeehhhhhhhi!!</p>
+    </transition>
 
   </div>
 
-  <script src="https://cdn.jsdeliver.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
